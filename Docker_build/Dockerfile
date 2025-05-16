@@ -62,20 +62,7 @@ ENTRYPOINT ["dbt"]
 ##
 FROM base as dbt-core
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-core@v1.9.4#egg=dbt-core&subdirectory=core"
-
-##
-# dbt-postgres
-##
-FROM base as dbt-postgres
-RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-postgres@v1.9.0"
-RUN python -m pip install --no-cache-dir dbt-adapters==1.14.8
-
-
-##
-# dbt-redshift
-##
-FROM base as dbt-redshift
-RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-redshift@v1.9.0#egg=dbt-redshift"
+RUN python -m pip install --upgrade --no-cache-dir dbt-adapters==1.10.4
 
 
 ##
@@ -84,43 +71,6 @@ RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-re
 FROM base as dbt-bigquery
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-bigquery@v1.9.1#egg=dbt-bigquery"
 
-
-##
-# dbt-snowflake
-##
-FROM base as dbt-snowflake
-RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-snowflake@v1.9.1#egg=dbt-snowflake"
-
-##
-# dbt-spark
-##
-FROM base as dbt-spark
-RUN apt-get update \
-  && apt-get dist-upgrade -y \
-  && apt-get install -y --no-install-recommends \
-    python3-dev \
-    libsasl2-dev \
-    gcc \
-    unixodbc-dev \
-  && apt-get clean \
-  && rm -rf \
-    /var/lib/apt/lists/* \
-    /tmp/* \
-    /var/tmp/*
-RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-spark@v1.9.1#egg=dbt-spark[all]"
-
-
-##
-# dbt-databricks
-##
-FROM base as dbt-databricks
-RUN python -m pip install --no-cache-dir "git+https://github.com/databricks/dbt-databricks@v1.7.3#egg=dbt-databricks"
-
-##
-# dbt-third-party
-##
-# FROM dbt-core as dbt-third-party
-# RUN python -m pip install --no-cache-dir "$dbt_third_party"
 
 ##
 # dbt-all
@@ -138,9 +88,4 @@ RUN apt-get update \
     /var/lib/apt/lists/* \
     /tmp/* \
     /var/tmp/*
-  RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-redshift@v1.9.0#egg=dbt-redshift"
   RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-bigquery@v1.9.1#egg=dbt-bigquery"
-  RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-snowflake@v1.9.1#egg=dbt-snowflake"
-  RUN python -m pip install --no-cache-dir "git+https://github.com/databricks/dbt-databricks@v1.7.3#egg=dbt-databricks"
-  RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-spark@v1.9.1#egg=dbt-spark[all]"
-  RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-postgres"
