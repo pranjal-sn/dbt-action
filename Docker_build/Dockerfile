@@ -68,6 +68,7 @@ RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-co
 ##
 FROM base as dbt-postgres
 RUN python -m pip install --no-cache-dir "git+https://github.com/dbt-labs/dbt-postgres@v1.9.0"
+RUN python -m pip install --no-cache-dir dbt-adapters==1.14.8
 
 
 ##
